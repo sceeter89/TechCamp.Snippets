@@ -12,7 +12,7 @@ namespace TechCamp
       public string LastName { get; set; }
       public string PhoneNumber { get; set; }
       public string EmailAddress { get; set; }
-      public int Height { get; set; }
+      public int Height { get; set; } = 180; // C# 6
 
       public void SetNameAndLastName() { }
    }
@@ -20,9 +20,23 @@ namespace TechCamp
    [TestFixture]
    class FluentAssertions
    {
+      class MyDisposable : IDisposable { public void Dispose() { } }
+
       [Test]
       public void TestIfNameAndLastNameAreSetProperly()
       {
+
+
+         using (var myDisposable = new MyDisposable())
+         {
+            // Do stuff with myDisposable
+         }
+         var lockObject = new object();
+         lock (lockObject)
+         {
+            // Synchronized block
+         }
+
          //Arrange
          var testedObject = new UserInfo();
 
@@ -32,6 +46,20 @@ namespace TechCamp
          //Assert
          Assert.That(testedObject.Name, Is.EqualTo("Somename"));
          Assert.That(testedObject.LastName, Is.EqualTo("Somelastname"));
+      }
+
+      [Test]
+      public void ___TestIfNameAndLastNameAreSetProperly()
+      {
+         //Arrange
+         var testedObject = new UserInfo();
+
+         //Act
+         testedObject.SetNameAndLastName();
+
+         //Assert
+         Assert.AreEqual(testedObject.Name, "Somename");
+         Assert.AreEqual(testedObject.LastName, "Somelastname");
       }
 
       [Test]
@@ -53,7 +81,12 @@ namespace TechCamp
       {
          //Arrange
          var testedObject = new UserInfo();
-         var expected = new { Name = "Somename", LastName = "Somelastname" };
+         var expected = new
+         {
+            Name = "Somename",
+            LastName = "Somelastname",
+            BirthDate = 10.March(1995)
+         };
 
          //Act
          testedObject.SetNameAndLastName();
